@@ -48,24 +48,24 @@ const Header = ({ scrollY }) => {
         ? 'bg-black/80 backdrop-blur-xl border-b border-white/10' 
         : 'bg-transparent'
     }`}>
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-3 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-4">
-              <span className="text-3xl">🇮🇹</span>
-              <div className="w-px h-12 bg-gradient-to-b from-transparent via-white/60 to-transparent"></div>
-              <span className="text-3xl">🇦🇷</span>
+          <div className="flex items-center space-x-3 sm:space-x-6">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <span className="text-xl sm:text-3xl">🇮🇹</span>
+              <div className="w-px h-8 sm:h-12 bg-gradient-to-b from-transparent via-white/60 to-transparent"></div>
+              <span className="text-xl sm:text-3xl">🇦🇷</span>
             </div>
-            <div className="hidden md:block">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <div className="hidden xs:block">
+              <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                 Olivia Castiglia
               </h1>
-              <p className="text-sm text-gray-400">Traductora Pública</p>
+              <p className="text-xs sm:text-sm text-gray-400">Traductora Pública</p>
             </div>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <div className="hidden lg:flex items-center space-x-6 text-sm">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="hidden md:flex items-center space-x-4 lg:space-x-6 text-xs sm:text-sm">
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span className="text-gray-300">Matriculada</span>
@@ -81,11 +81,11 @@ const Header = ({ scrollY }) => {
               href="https://wa.me/5491134227461?text=Hola, me interesa conocer más sobre sus servicios"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-green-500/25 transition-all duration-300 hover:scale-105 group"
+              className="flex items-center space-x-1 sm:space-x-2 bg-green-500 hover:bg-green-600 text-white px-2 sm:px-4 py-2 rounded-full shadow-lg hover:shadow-green-500/25 transition-all duration-300 hover:scale-105 group relative"
             >
-              <span className="text-lg">💬</span>
-              <span className="font-medium hidden sm:inline">WhatsApp</span>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+              <span className="text-sm sm:text-lg">💬</span>
+              <span className="font-medium text-xs sm:text-sm hidden xs:inline">WhatsApp</span>
+              <div className="absolute -top-1 -right-1 w-2 sm:w-3 h-2 sm:h-3 bg-red-500 rounded-full animate-pulse"></div>
             </a>
           </div>
         </div>
@@ -105,21 +105,21 @@ const Navigation = ({ activeSection, setActiveSection }) => {
 
   return (
     <nav className="fixed top-16 left-0 right-0 z-40 mt-4">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-3 sm:px-6">
         <div className="flex justify-center">
-          <div className="flex items-center space-x-1 sm:space-x-2 bg-black/40 backdrop-blur-xl rounded-full p-2 border border-white/10">
+          <div className="flex items-center space-x-0.5 xs:space-x-1 sm:space-x-2 bg-black/40 backdrop-blur-xl rounded-full p-1.5 sm:p-2 border border-white/10 max-w-full overflow-x-auto">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => setActiveSection(item.id)}
-                className={`flex flex-col items-center space-y-1 px-3 py-2 rounded-full text-xs font-medium transition-all duration-300 ${
+                className={`flex flex-col items-center justify-center min-w-0 px-1.5 xs:px-2 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs font-medium transition-all duration-300 ${
                   activeSection === item.id
                     ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg shadow-cyan-500/25'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'
                 }`}
               >
-                <span className="text-sm">{item.icon}</span>
-                <span className="text-xs leading-tight">{item.label}</span>
+                <span className="text-xs xs:text-sm mb-0.5 xs:mb-1">{item.icon}</span>
+                <span className="text-[10px] xs:text-xs leading-tight whitespace-nowrap">{item.label}</span>
               </button>
             ))}
           </div>
@@ -132,14 +132,14 @@ const Navigation = ({ activeSection, setActiveSection }) => {
 const HeroSection = () => {
   return (
     <section className="pt-32 pb-20 relative">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-3 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm rounded-full px-6 py-2 border border-cyan-500/30 mb-8">
-            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-            <span className="text-cyan-300 text-sm font-medium">Disponible para nuevos proyectos</span>
+          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm rounded-full px-3 xs:px-4 sm:px-6 py-2 border border-cyan-500/30 mb-6 sm:mb-8">
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+            <span className="text-cyan-300 text-xs sm:text-sm font-medium">Disponible para nuevos proyectos</span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight">
+          <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-8xl font-black mb-4 sm:mb-6 leading-tight">
             <span className="bg-gradient-to-r from-white via-cyan-200 to-purple-200 bg-clip-text text-transparent">
               Traducciones
             </span>
@@ -149,32 +149,32 @@ const HeroSection = () => {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-2">
             Especialista en ciudadanía italiana con más de 35 años de experiencia. 
             Traducciones oficiales que abren puertas a tu futuro.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <button className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full font-bold text-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/25 hover:scale-105">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-2">
+            <button className="group relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full font-bold text-base sm:text-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/25 hover:scale-105">
               <span className="relative z-10">Comenzar Proyecto</span>
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
             
-            <button className="px-8 py-4 border-2 border-white/20 rounded-full font-bold text-lg hover:border-cyan-400/50 hover:bg-cyan-400/10 transition-all duration-300">
+            <button className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/20 rounded-full font-bold text-base sm:text-lg hover:border-cyan-400/50 hover:bg-cyan-400/10 transition-all duration-300">
               Ver Servicios
             </button>
           </div>
           
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="mt-12 sm:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 px-2">
             {[
               { number: '35+', label: 'Años de Experiencia', icon: '⭐' },
               { number: '1000+', label: 'Documentos Traducidos', icon: '📄' },
               { number: '100%', label: 'Validez Legal', icon: '⚖️' },
             ].map((stat, index) => (
-              <div key={index} className="group p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-cyan-400/50 transition-all duration-300 hover:transform hover:scale-105">
-                <div className="text-3xl mb-2">{stat.icon}</div>
-                <div className="text-3xl font-black text-cyan-400 mb-2">{stat.number}</div>
-                <div className="text-gray-400">{stat.label}</div>
+              <div key={index} className="group p-4 sm:p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-cyan-400/50 transition-all duration-300 hover:transform hover:scale-105">
+                <div className="text-2xl sm:text-3xl mb-2">{stat.icon}</div>
+                <div className="text-2xl sm:text-3xl font-black text-cyan-400 mb-2">{stat.number}</div>
+                <div className="text-sm sm:text-base text-gray-400">{stat.label}</div>
               </div>
             ))}
           </div>
