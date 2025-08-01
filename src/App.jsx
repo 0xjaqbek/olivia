@@ -494,7 +494,7 @@ const Header = ({ scrollY, t, toggleLanguage, language }) => {
               className="flex items-center space-x-1 sm:space-x-2 bg-green-500 hover:bg-green-600 text-white px-2 sm:px-4 py-2 rounded-full shadow-lg hover:shadow-green-500/25 transition-all duration-300 hover:scale-105 group relative"
             >
               <span className="text-sm sm:text-lg">💬</span>
-              <span className="font-medium text-xs sm:text-sm hidden xs:inline">{t('whatsapp')}</span>
+              <span className="font-medium text-[10px] xs:text-xs sm:text-sm">{t('whatsapp')}</span>
               <div className="absolute -top-1 -right-1 w-2 sm:w-3 h-2 sm:h-3 bg-red-500 rounded-full animate-pulse"></div>
             </a>
           </div>
