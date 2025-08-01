@@ -291,25 +291,25 @@ const DocumentsSection = () => {
 
   return (
     <section className="py-20 relative">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-black mb-4">
+      <div className="container mx-auto px-3 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl xs:text-4xl sm:text-5xl font-black mb-4">
             <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
               Documentos
             </span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base xs:text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto px-2">
             Todo tipo de documentación oficial con validez legal
           </p>
         </div>
 
-        <div className="flex justify-center mb-12">
-          <div className="flex space-x-2 bg-black/40 backdrop-blur-xl rounded-full p-2 border border-white/10">
+        <div className="flex justify-center mb-8 sm:mb-12 px-2">
+          <div className="flex space-x-0.5 xs:space-x-1 sm:space-x-2 bg-black/40 backdrop-blur-xl rounded-full p-1.5 sm:p-2 border border-white/10 max-w-full overflow-x-auto">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                className={`px-2 xs:px-3 sm:px-6 py-2 xs:py-2.5 sm:py-3 rounded-full font-medium transition-all duration-300 text-xs xs:text-sm sm:text-base whitespace-nowrap ${
                   activeCategory === category
                     ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white'
                     : 'text-gray-400 hover:text-white'
@@ -321,23 +321,28 @@ const DocumentsSection = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredDocs.map((doc, index) => (
-            <div
-              key={index}
-              className="group p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-emerald-400/50 transition-all duration-300 hover:transform hover:scale-105"
-            >
-              <div className="text-3xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                {doc.icon}
-              </div>
-              <h3 className="text-lg font-semibold text-white mb-2">
-                {doc.title}
-              </h3>
-              <div className="text-emerald-400 text-sm font-medium">
-                {doc.category}
-              </div>
+        <div className="flex justify-center px-4">
+          <div className="w-full max-w-6xl">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+              {filteredDocs.map((doc, index) => (
+                <div
+                  key={index}
+                  className="group p-4 sm:p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-emerald-400/50 transition-all duration-300 hover:transform hover:scale-105 w-full max-w-xs sm:max-w-sm flex-shrink-0"
+                  style={{ minWidth: '280px' }}
+                >
+                  <div className="text-2xl sm:text-3xl mb-3 sm:mb-4 transform group-hover:scale-110 transition-transform duration-300 text-center">
+                    {doc.icon}
+                  </div>
+                  <h3 className="text-base sm:text-lg font-semibold text-white mb-2 text-center">
+                    {doc.title}
+                  </h3>
+                  <div className="text-emerald-400 text-xs sm:text-sm font-medium text-center">
+                    {doc.category}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
