@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
 
 // Language translations
 const translations = {
@@ -539,60 +540,6 @@ const Navigation = ({ activeSection, setActiveSection, t }) => {
   );
 };
 
-const HeroSection = () => {
-  return (
-    <section className="pt-32 pb-20 relative">
-      <div className="container mx-auto px-3 sm:px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm rounded-full px-3 xs:px-4 sm:px-6 py-2 border border-cyan-500/30 mb-6 sm:mb-8">
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-            <span className="text-cyan-300 text-xs sm:text-sm font-medium">Disponible para nuevos proyectos</span>
-          </div>
-          
-          <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-8xl font-black mb-4 sm:mb-6 leading-tight">
-            <span className="bg-gradient-to-r from-white via-cyan-200 to-purple-200 bg-clip-text text-transparent">
-              Traducciones
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Profesionales
-            </span>
-          </h1>
-          
-          <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-2">
-            Especialista en ciudadanía italiana con más de 35 años de experiencia. 
-            Traducciones oficiales que abren puertas a tu futuro.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-2">
-            <button className="group relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full font-bold text-base sm:text-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/25 hover:scale-105">
-              <span className="relative z-10">Comenzar Proyecto</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
-            
-            <button className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/20 rounded-full font-bold text-base sm:text-lg hover:border-cyan-400/50 hover:bg-cyan-400/10 transition-all duration-300">
-              Ver Servicios
-            </button>
-          </div>
-          
-          <div className="mt-12 sm:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 px-2">
-            {[
-              { number: '35+', label: 'Años de Experiencia', icon: '⭐' },
-              { number: '1000+', label: 'Documentos Traducidos', icon: '📄' },
-              { number: '100%', label: 'Validez Legal', icon: '⚖️' },
-            ].map((stat, index) => (
-              <div key={index} className="group p-4 sm:p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-cyan-400/50 transition-all duration-300 hover:transform hover:scale-105">
-                <div className="text-2xl sm:text-3xl mb-2">{stat.icon}</div>
-                <div className="text-2xl sm:text-3xl font-black text-cyan-400 mb-2">{stat.number}</div>
-                <div className="text-sm sm:text-base text-gray-400">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const ServicesSection = ({ t }) => {
   const services = [
@@ -682,55 +629,123 @@ const ServicesSection = ({ t }) => {
   );
 };
 
-const DocumentsSection = () => {
+const DocumentsSection = ({ t }) => {
   const documents = [
-    { icon: '👶', title: 'Actas de Nacimiento', category: 'Civil' },
-    { icon: '💒', title: 'Certificados de Matrimonio', category: 'Civil' },
-    { icon: '⚰️', title: 'Actas de Defunción', category: 'Civil' },
-    { icon: '👨‍⚖️', title: 'Sentencias Judiciales', category: 'Legal' },
-    { icon: '🎓', title: 'Títulos Académicos', category: 'Educativo' },
-    { icon: '🔍', title: 'Antecedentes Penales', category: 'Legal' },
-    { icon: '📜', title: 'Escrituras Públicas', category: 'Notarial' },
-    { icon: '⚖️', title: 'Poderes Legales', category: 'Notarial' },
+    { icon: '👶', title: t('actasNacimiento'), category: t('civil') },
+    { icon: '💒', title: t('certificadosMatrimonio'), category: t('civil') },
+    { icon: '⚰️', title: t('actasDefuncion'), category: t('civil') },
+    { icon: '👨‍⚖️', title: t('sentenciasJudiciales'), category: t('legal') },
+    { icon: '🎓', title: t('titulosAcademicos'), category: t('educativo') },
+    { icon: '🔍', title: t('antecedentesPenales'), category: t('legal') },
+    { icon: '📜', title: t('escriturasPublicas'), category: t('notarial') },
+    { icon: '⚖️', title: t('poderesLegales'), category: t('notarial') },
   ];
 
-  const categories = ['Civil', 'Legal', 'Educativo', 'Notarial'];
-  const [activeCategory, setActiveCategory] = useState('Civil');
+  const categories = [t('civil'), t('legal'), t('educativo'), t('notarial')];
+  const [activeCategory, setActiveCategory] = useState(t('civil'));
+  const [isSticky, setIsSticky] = useState(false);
+  const [menuHeight, setMenuHeight] = useState(0);
+  
+  const sectionRef = useRef(null);
+  const menuRef = useRef(null);
+  const menuContainerRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current || !menuRef.current || !menuContainerRef.current) return;
+
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+      const menuContainer = menuContainerRef.current.getBoundingClientRect();
+      
+      // Main navigation height (approximately 88px based on your CSS)
+      const mainNavHeight = 104; // Increased to account for main nav + its spacing
+      const threshold = mainNavHeight + 16; // 16px for some spacing
+      
+      // Check if we should stick the menu
+      const shouldStick = menuContainer.top <= threshold && sectionRect.bottom > threshold + menuHeight;
+      
+      setIsSticky(shouldStick);
+    };
+
+    // Get menu height on mount
+    if (menuRef.current) {
+      setMenuHeight(menuRef.current.offsetHeight);
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    
+    // Initial check
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [menuHeight]);
+
+  // Update activeCategory when language changes
+  useEffect(() => {
+    setActiveCategory(t('civil'));
+  }, [t]);
 
   const filteredDocs = documents.filter(doc => doc.category === activeCategory);
 
   return (
-    <section className="py-20 relative">
+    <section ref={sectionRef} className="py-20 relative">
       <div className="container mx-auto px-3 sm:px-6">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl xs:text-4xl sm:text-5xl font-black mb-4">
             <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
-              Documentos
+              {t('documentosTitle')}
             </span>
           </h2>
           <p className="text-base xs:text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto px-2">
-            Todo tipo de documentación oficial con validez legal
+            {t('documentosDescription')}
           </p>
         </div>
 
-        <div className="flex justify-center mb-8 sm:mb-12 px-2">
-          <div className="flex space-x-0.5 xs:space-x-1 sm:space-x-2 bg-black/40 backdrop-blur-xl rounded-full p-1.5 sm:p-2 border border-white/10 max-w-full overflow-x-auto">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-2 xs:px-3 sm:px-6 py-2 xs:py-2.5 sm:py-3 rounded-full font-medium transition-all duration-300 text-xs xs:text-sm sm:text-base whitespace-nowrap ${
-                  activeCategory === category
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+        {/* Menu Container - maintains space when sticky */}
+        <div 
+          ref={menuContainerRef}
+          className="relative mb-8 sm:mb-12"
+          style={{ minHeight: isSticky ? `${menuHeight}px` : 'auto' }}
+        >
+          {/* Category Menu */}
+          <div 
+            ref={menuRef}
+            className={`transition-all duration-300 ease-in-out ${
+              isSticky 
+                ? 'fixed left-0 right-0 z-30 py-4' 
+                : 'relative'
+            }`}
+            style={{ 
+              top: isSticky ? '144px' : 'auto' // Position below main nav (88px) + some spacing
+            }}
+          >
+            <div className="container mx-auto px-3 sm:px-6">
+              <div className="flex justify-center">
+                <div className="flex space-x-0.5 xs:space-x-1 sm:space-x-2 bg-black/40 backdrop-blur-xl rounded-full p-1.5 sm:p-2 border border-white/10 max-w-full overflow-x-auto">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setActiveCategory(category)}
+                      className={`px-2 xs:px-3 sm:px-6 py-2 xs:py-2.5 sm:py-3 rounded-full font-medium transition-all duration-300 text-xs xs:text-sm sm:text-base whitespace-nowrap ${
+                        activeCategory === category
+                          ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white'
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
+        {/* Documents Grid */}
         <div className="flex justify-center px-4">
           <div className="w-full max-w-6xl">
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
@@ -756,153 +771,6 @@ const DocumentsSection = () => {
         </div>
       </div>
     </section>
-  );
-};
-
-const DeliverySection = ({ t }) => {
-  return (
-    <section className="py-20 relative">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-black mb-4">
-            <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-              {t('entregaFlexible')}
-            </span>
-          </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            {t('entregaDescription')}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <div className="group p-8 rounded-3xl bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-sm border border-orange-500/30 hover:border-orange-400/50 transition-all duration-300">
-            <div className="text-5xl mb-6">✍️</div>
-            <h3 className="text-3xl font-bold mb-4 text-white">{t('firmaOlografa')}</h3>
-            <div className="space-y-4 text-gray-300">
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-                <p>{t('retiroPersonal')}</p>
-              </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-                <p>{t('envioPostal')}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="group p-8 rounded-3xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-sm border border-blue-500/30 hover:border-cyan-400/50 transition-all duration-300">
-            <div className="text-5xl mb-6">💻</div>
-            <h3 className="text-3xl font-bold mb-4 text-white">{t('firmaDigital')}</h3>
-            <div className="space-y-4 text-gray-300">
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2"></div>
-                <p>{t('envioInmediato')}</p>
-              </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2"></div>
-                <p>{t('listosImprimir')}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const ContactSection = ({ t }) => {
-  return (
-    <section className="py-20 relative">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-black mb-4">
-            <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-              {t('hablemos')}
-            </span>
-          </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            {t('contactoDescription')}
-          </p>
-        </div>
-
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="p-8 rounded-3xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 backdrop-blur-sm border border-pink-500/30">
-              <div className="text-5xl mb-6">💬</div>
-              <h3 className="text-3xl font-bold mb-4 text-white">{t('whatsappDirecto')}</h3>
-              <p className="text-gray-300 mb-6">
-                {t('respuestaInmediata')}
-              </p>
-              <button className="w-full py-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-green-500/25 transition-all duration-300">
-                {t('enviarMensaje')}
-              </button>
-            </div>
-
-            <div className="p-8 rounded-3xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-sm border border-blue-500/30">
-              <div className="text-5xl mb-6">📧</div>
-              <h3 className="text-3xl font-bold mb-4 text-white">{t('emailProfesional')}</h3>
-              <p className="text-gray-300 mb-6">
-                {t('consultasDetalladas')}
-              </p>
-              <button className="w-full py-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300">
-                {t('enviarEmail')}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Footer = () => {
-  return (
-    <footer className="py-12 border-t border-white/10 relative bg-black/20 backdrop-blur-sm">
-      <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto">
-          {/* Main Footer Content */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-black mb-3">
-              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                Olivia Castiglia
-              </span>
-            </h2>
-            <p className="text-gray-300 mb-1">Traductora Pública de Italiano</p>
-            <p className="text-sm text-cyan-400 font-medium">35+ años de experiencia</p>
-          </div>
-          
-          {/* Professional Information Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <h3 className="text-lg font-bold mb-3 text-cyan-400 flex items-center">
-                <span className="mr-2">⚖️</span>Matriculada en:
-              </h3>
-              <div className="space-y-1 text-sm text-gray-300">
-                <p>• CTBA - Ciudad Autónoma de Buenos Aires</p>
-                <p>• CTPBA - Provincia de Buenos Aires</p>
-              </div>
-            </div>
-            
-            <div className="p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-              <h3 className="text-lg font-bold mb-3 text-purple-400 flex items-center">
-                <span className="mr-2">🎯</span>Especialidades:
-              </h3>
-              <div className="space-y-1 text-sm text-gray-300">
-                <p>• Ciudadanía Italiana</p>
-                <p>• Traducciones Jurídicas</p>
-              </div>
-            </div>
-          </div>
-          
-          {/* Copyright */}
-          <div className="border-t border-white/10 pt-6 text-center">
-            <p className="text-gray-400 text-sm">
-              © 2024 Olivia Castiglia - Traductora Pública de Italiano
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
   );
 };
 
